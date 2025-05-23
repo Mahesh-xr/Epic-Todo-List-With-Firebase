@@ -8,6 +8,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool today = true, tomorrow=false, nextweek=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,16 +35,19 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10,),
-            Text("Good Morning",
-            style:TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w300,
-              
-              fontSize: 20,
-            ) ,),
-            SizedBox(height:10),
+            SizedBox(height: 10),
+            Text(
+              "Good Morning",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 10),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Material(
                   elevation: 10,
@@ -59,11 +63,27 @@ class _HomeState extends State<Home> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color:Colors.white,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
+                Text(
+                      "Tomorrow",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Next Week",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
               ],
             ),
           ],
