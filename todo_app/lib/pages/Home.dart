@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Material(
+               today ? Material(
                   elevation: 10,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
@@ -67,23 +67,100 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
+                ):GestureDetector(
+                  onTap: (){
+                  today=true;
+                tomorrow=false;
+                nextweek=false;
+                setState(() {
+                  
+                });
+                  },
+                  
+
+                 
+                  child: Text(
+                        "Today",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                 ),
-                Text(
+               tomorrow?
+                   Material(
+                      elevation: 10,
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF3dffe3),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          "Tomorrow",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
+                 
+                :GestureDetector(
+                  onTap: (){today=false;
+                tomorrow=true;
+                nextweek=false;
+                 setState(() {
+                  
+                });},
+                
+                child:Text(
                       "Tomorrow",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
+                    ),),
+                   nextweek? Material(
+                  elevation: 10,
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3dffe3),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    Text(
-                      "Next Week",
+                    child: Text(
+                      "Nextweek",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
+                  ),
+                ):GestureDetector(
+                  onTap: (){today=false;
+                tomorrow=false;
+                nextweek=true;
+                setState(() {
+                  
+                });},
+                  child: Text(
+                        "Next Week",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                )
+                    
+                    ,
               ],
             ),
           ],
