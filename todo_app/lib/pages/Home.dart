@@ -1,4 +1,7 @@
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
+import "package:random_string/random_string.dart";
+import "package:todo_app/services/db.dart";
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,6 +12,47 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool today = true, tomorrow = false, nextweek = false, suggest = false;
+  Stream? todoStream;
+  getontheLoad()async{
+
+    DatabaseMethods databaseMethods = DatabaseMethods();
+
+    todoStream = await databaseMethods.getAllTasks(today?"Today":tomorrow?"Tomorrow":"NextWeek");
+    setState(() {
+      
+    });
+  }
+  @override
+  initState(){
+    getontheLoad();
+    super.initState();
+  }
+  Widget allWork(){
+    return StreamBuilder(stream: todoStream, builder: (context, AsyncSnapshot snapshot){
+      return snapshot.hasData? ListView.builder(padding: EdgeInsets.zero, itemCount: snapshot.data.docs.length, itemBuilder: (context, index){
+        DocumentSnapshot ds = snapshot.data.docs[index];
+        return CheckboxListTile(
+              value: suggest,
+              onChanged: (newValue) {
+                setState(() {
+                  suggest = newValue!;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              activeColor: Color(0xFF279cfb),
+              title: Text(
+                ds["work"],
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            );
+      }): CircularProgressIndicator();
+    });
+  }
+  
   TextEditingController textController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -80,11 +124,13 @@ class _HomeState extends State<Home> {
                       ),
                     )
                     : GestureDetector(
-                      onTap: () {
+                      onTap: () async{
                         today = true;
                         tomorrow = false;
                         nextweek = false;
                         setState(() {});
+                                                await getontheLoad();
+
                       },
 
                       child: Text(
@@ -120,11 +166,12 @@ class _HomeState extends State<Home> {
                       ),
                     )
                     : GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         today = false;
                         tomorrow = true;
                         nextweek = false;
                         setState(() {});
+                        await getontheLoad();
                       },
 
                       child: Text(
@@ -160,11 +207,13 @@ class _HomeState extends State<Home> {
                       ),
                     )
                     : GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         today = false;
                         tomorrow = false;
                         nextweek = true;
                         setState(() {});
+                         await getontheLoad();
+
                       },
                       child: Text(
                         "Next Week",
@@ -178,24 +227,8 @@ class _HomeState extends State<Home> {
               ],
             ),
             SizedBox(height: 10),
-            CheckboxListTile(
-              value: suggest,
-              onChanged: (newValue) {
-                setState(() {
-                  suggest = newValue!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              activeColor: Color(0xFF279cfb),
-              title: Text(
-                "Learn Firebase",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
+            Flexible(child: allWork())
+            
           ],
         ),
       ),
@@ -255,12 +288,26 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.circular(10),
                   
                     ),
-                    child: Center(
-                      child: Text(
-                        "add",
-                        style: TextStyle(
-                          color: Colors.white,
-                          
+                    child: GestureDetector(
+                      onTap: () {
+                        String id = randomAlphaNumeric(10);
+                        Map<String, dynamic> userTask = {
+                          "work": textController.text,
+                          "id": id
+                        };
+
+                        today? DatabaseMethods().addTodayTask(userTask, id): tomorrow?DatabaseMethods().addTomorrowTask(userTask, id):DatabaseMethods().addNextWeekTask(userTask, id);
+                        Navigator.pop(context);
+                        textController.text = "";
+                        
+                      },
+                      child: Center(
+                        child: Text(
+                          "add",
+                          style: TextStyle(
+                            color: Colors.white,
+                            
+                          ),
                         ),
                       ),
                     ),
