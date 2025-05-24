@@ -8,10 +8,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool today = true, tomorrow=false, nextweek=false;
+  bool today = true, tomorrow = false, nextweek = false, suggest=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){},child: Icon(Icons.add, color: Color(0xFF249fff),size: 30.0,),),
       body: Container(
         padding: EdgeInsets.only(top: 50, left: 30),
         height: MediaQuery.of(context).size.height,
@@ -46,40 +47,41 @@ class _HomeState extends State<Home> {
               ),
             ),
             SizedBox(height: 10),
-            Row(
+            Row( 
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-               today ? Material(
-                  elevation: 10,
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF3dffe3),
+                today
+                    ? Material(
+                      elevation: 10,
                       borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      "Today",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF3dffe3),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          "Today",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ):GestureDetector(
-                  onTap: (){
-                  today=true;
-                tomorrow=false;
-                nextweek=false;
-                setState(() {
-                  
-                });
-                  },
-                  
+                    )
+                    : GestureDetector(
+                      onTap: () {
+                        today = true;
+                        tomorrow = false;
+                        nextweek = false;
+                        setState(() {});
+                      },
 
-                 
-                  child: Text(
+                      child: Text(
                         "Today",
                         style: TextStyle(
                           fontSize: 20,
@@ -87,13 +89,16 @@ class _HomeState extends State<Home> {
                           color: Colors.white,
                         ),
                       ),
-                ),
-               tomorrow?
-                   Material(
+                    ),
+                tomorrow
+                    ? Material(
                       elevation: 10,
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
                         decoration: BoxDecoration(
                           color: Color(0xFF3dffe3),
                           borderRadius: BorderRadius.circular(20),
@@ -108,49 +113,54 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     )
-                 
-                :GestureDetector(
-                  onTap: (){today=false;
-                tomorrow=true;
-                nextweek=false;
-                 setState(() {
-                  
-                });},
-                
-                child:Text(
-                      "Tomorrow",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    : GestureDetector(
+                      onTap: () {
+                        today = false;
+                        tomorrow = true;
+                        nextweek = false;
+                        setState(() {});
+                      },
+
+                      child: Text(
+                        "Tomorrow",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),),
-                   nextweek? Material(
-                  elevation: 10,
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF3dffe3),
+                    ),
+                nextweek
+                    ? Material(
+                      elevation: 10,
                       borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      "Nextweek",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF3dffe3),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          "Nextweek",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ):GestureDetector(
-                  onTap: (){today=false;
-                tomorrow=false;
-                nextweek=true;
-                setState(() {
-                  
-                });},
-                  child: Text(
+                    )
+                    : GestureDetector(
+                      onTap: () {
+                        today = false;
+                        tomorrow = false;
+                        nextweek = true;
+                        setState(() {});
+                      },
+                      child: Text(
                         "Next Week",
                         style: TextStyle(
                           fontSize: 18,
@@ -158,11 +168,26 @@ class _HomeState extends State<Home> {
                           color: Colors.white,
                         ),
                       ),
-                )
-                    
-                    ,
+                    ),
               ],
             ),
+            SizedBox(height: 10,),
+            CheckboxListTile(
+              value: suggest, onChanged: (newValue){
+                
+                  setState(() {
+                    suggest = newValue!;
+                  });
+              },
+               controlAffinity: ListTileControlAffinity.leading,
+                activeColor: Color(0xFF279cfb),
+                title: Text("Learn Firebase", style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w400
+
+                ),),
+                )
           ],
         ),
       ),
